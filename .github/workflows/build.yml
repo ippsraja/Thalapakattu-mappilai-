@@ -10,7 +10,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
+        python-version: '3.8'
     - name: Install Tools
       run: |
         pip install pywebview pyinstaller
@@ -23,6 +23,6 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v1.0
-        name: Hotel Billing App v1.0
+        tag_name: v1.1
+        name: Hotel Billing App v1.1
         files: dist/HotelBillingApp.exe
