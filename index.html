@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>தலப்பாக்கட்டு மாப்பிள்ளை ரெஸ்டாரன்ட்</title>
+  <style>
+    :root {
+      --primary: #c21807;
+      --primary-dark: #8b0000;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #cbd5e1;
+      --text: #0f172a;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 75px;
+    }
+    .dev-top-banner {
+      background: #0f172a;
+      color: #38bdf8;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 6px 8px;
+      letter-spacing: 0.5px;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 {
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+    header .sub-info {
+      font-size: 0.75rem;
+      opacity: 0.95;
+    }
+    .main-wrapper {
+      padding: 10px;
+      max-width: 650px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 62px;
+      background: #ffffff;
+      display: flex;
+      border-top: 2px solid #cbd5e1;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.15);
+      z-index: 99999;
+    }
+    .nav-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #64748b;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .nav-btn.active {
+      color: var(--primary);
+      border-top: 3.5px solid var(--primary);
+      background: #fff5f5;
+    }
+    .bill-box {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      margin-bottom: 12px;
+    }
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .toggle-group {
+      display: flex;
+      flex: 1;
+      background: #e2e8f0;
+      border-radius: 8px;
+      padding: 3px;
+      gap: 4px;
+    }
+    .toggle-opt {
+      flex: 1;
+      text-align: center;
+      padding: 7px 0;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .toggle-opt.active {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .add-section {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+    .input-box {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      outline: none;
+      background: white;
+      margin-bottom: 8px;
+    }
+    .input-box:focus {
+      border-color: var(--primary);
+    }
+    .select-dropdown {
+      width: 100%;
+      padding: 11px 12px;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      background: #fff;
+      color: #0f172a;
+      outline: none;
+      margin-bottom: 8px;
+    }
+    .qty-add-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .qty-input-wrap {
+      display: flex;
+      align-items: center;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      width: 130px;
+    }
+    .qty-btn {
+      width: 38px;
+      height: 38px;
+      background: #f1f5f9;
+      border: none;
+      font-size: 1.2rem;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .qty-num-field {
+      flex: 1;
+      width: 45px;
+      height: 38px;
+      border: none;
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 900;
+      outline: none;
+    }
+    .btn-add-food {
+      flex: 1;
+      height: 38px;
+      background: #059669;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    .cart-table th {
+      background: #f1f5f9;
+      padding: 8px 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+    .cart-table td {
+      padding: 8px 6px;
+      font-size: 0.85rem;
+      border-bottom: 1px dashed var(--border);
+      vertical-align: middle;
+    }
+    .cart-item-title {
+      font-weight: 800;
+      color: var(--text);
+    }
+    .inline-qty-input {
+      width: 46px;
+      padding: 4px 2px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 900;
+      font-size: 0.9rem;
+    }
+    .del-btn {
+      color: #dc2626;
+      background: #fee2e2;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .summary-card {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid var(--border);
+    }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.25rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+    .action-grid {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-clear {
+      width: 30%;
+      background: #e2e8f0;
+      color: #475569;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .btn-print {
+      flex: 1;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 3px 6px rgba(194, 24, 7, 0.3);
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+    .form-group { margin-bottom: 10px; }
+    .form-group label {
+      display: block;
+      font-weight: 800;
+      font-size: 0.78rem;
+      margin-bottom: 3px;
+    }
+    .btn-action {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 8px;
+    }
+    .styled-table th, .styled-table td {
+      padding: 8px 8px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .styled-table th {
+      background: #f8fafc;
+      font-weight: 800;
+    }
+    .cat-badge {
+      background: #e2e8f0;
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      border: none;
+      color: #334155;
+    }
+    .cat-badge.active {
+      background: var(--primary);
+      color: white;
+    }
+    #printReceipt { display: none; }
+    @media print {
+      @page {
+        margin: 0;
+        size: 80mm auto;
+      }
+      html, body {
+        width: 80mm;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+      }
+      body * { visibility: hidden; }
+      #printReceipt, #printReceipt * { visibility: visible; }
+      #printReceipt {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 76mm;
+        margin: 0 auto;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        font-weight: 900;
+        color: #000 !important;
+        line-height: 1.3;
+        padding: 1mm 2mm 8mm 2mm;
+      }
+      .p-center { text-align: center; }
+      .p-logo {
+        max-width: 65mm;
+        height: auto;
+        display: block;
+        margin: 0 auto 6px auto;
+      }
+      .p-title { font-size: 17px; font-weight: 900; }
+      .p-sub { font-size: 12px; font-weight: bold; }
+      .p-divider { border-top: 1.5px dashed #000; margin: 4px 0; }
+      .p-table { width: 100%; border-collapse: collapse; margin: 4px 0; font-weight: 900; }
+      .p-table th, .p-table td { padding: 2px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dev-top-banner">
+    ⚡ Software Created by: Sri Lakshmi Software solutions | Cell: 9976695898
+  </div>
+
+  <header>
+    <div>
+      <h1 id="headerRestName">தலப்பாக்கட்டு மாப்பிள்ளை ரெஸ்டாரன்ட்</h1>
+      <div class="sub-info">IOB வங்கி அருகில், அம்பலவாணபுரம், வி.கே புரம் - 627425</div>
+    </div>
+    <div style="text-align: right;">
+      <span id="currentClock" style="font-weight: 900; font-size: 0.85rem;"></span>
+    </div>
+  </header>
+
+  <div class="main-wrapper">
+    
+    <!-- 1. BILLING TAB -->
+    <div id="tab-billing" class="tab-content active">
+      <div class="bill-box">
+        
+        <div class="meta-row">
+          <div>
+            <span style="font-size:0.8rem; font-weight:bold; color:#64748b;">பில் எண்:</span>
+            <strong id="activeBillNo" style="font-size:1.1rem; color:var(--primary);">#1001</strong>
+          </div>
+          <div id="cartOrderTypeDisplay" style="font-weight: 900; font-size:0.9rem; color: #334155;">DINE-IN</div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <div class="toggle-group" id="orderTypeToggle">
+            <div class="toggle-opt active" onclick="setOrderType('DINE-IN')">Dine-In</div>
+            <div class="toggle-opt" onclick="setOrderType('PARCEL')">Parcel</div>
+          </div>
+          <div class="toggle-group" id="payTypeToggle">
+            <div class="toggle-opt active" onclick="setPayMethod('CASH')">Cash</div>
+            <div class="toggle-opt" onclick="setPayMethod('UPI')">UPI</div>
+          </div>
+        </div>
+
+        <div class="add-section">
+          <label style="display:block; font-size:0.8rem; font-weight:800; margin-bottom:4px; color:#475569;">1. உணவுப் பெயரைத் தேடுக (Search Filter):</label>
+          <input type="text" id="foodSearchInput" class="input-box" placeholder="Type chicken, biryani, 176, பிரியாணி..." autocomplete="off" oninput="filterFoodDropdown(this.value)">
+          
+          <label style="display:block; font-size:0.8rem; font-weight:800; margin-bottom:4px; color:#475569;">2. உணவைத் தேர்ந்தெடுக்கவும் (Select Food):</label>
+          <select id="foodSelectBox" class="select-dropdown"></select>
+
+          <div class="qty-add-bar">
+            <div class="qty-input-wrap">
+              <button class="qty-btn" type="button" onclick="adjustQuickQty(-1)">-</button>
+              <input type="number" id="quickQtyInput" class="qty-num-field" value="1" min="1">
+              <button class="qty-btn" type="button" onclick="adjustQuickQty(1)">+</button>
+            </div>
+            <button class="btn-add-food" type="button" onclick="addSelectedFoodToCart()">+ Add Item</button>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto; max-height: 240px; margin-bottom: 8px;">
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th style="width:45%;">உணவு</th>
+                <th style="width:25%; text-align:center;">எண்ணிக்கை</th>
+                <th style="width:20%; text-align:right;">விலை</th>
+                <th style="width:10%; text-align:center;"></th>
+              </tr>
+            </thead>
+            <tbody id="cartTableBody">
+              <tr>
+                <td colspan="4" style="text-align:center; padding: 25px 0; color:#94a3b8; font-weight:800;">உணவுப் பொருட்களைச் சேர்க்கவும்</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="summary-card">
+          <div class="total-row">
+            <span style="color:#334155; font-size:1.05rem;">மொத்த தொகை (Total):</span>
+            <span id="cartGrandTotal">₹ 0.00</span>
+          </div>
+          <div class="action-grid">
+            <button class="btn-clear" onclick="clearCart()">Clear</button>
+            <button class="btn-print" onclick="processAndPrintBill()">
+              🖨️ PRINT BILL
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2. FOODS TAB -->
+    <div id="tab-foods" class="tab-content">
+      <div class="card">
+        <h2 style="margin-bottom: 10px; font-size: 1.05rem; color: var(--primary);">உணவு சேர்த்தல் / திருத்துதல் (Add/Edit)</h2>
+        <input type="hidden" id="foodEditId">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px;">
+          <div class="form-group">
+            <label>Food ID</label>
+            <input type="number" id="foodIdInput" class="input-box" placeholder="e.g. 266">
+          </div>
+          <div class="form-group">
+            <label>உணவுப் பெயர் (Tamil Name)</label>
+            <input type="text" id="foodNameInput" class="input-box" placeholder="e.g. சிக்கன் பிரியாணி">
+          </div>
+          <div class="form-group">
+            <label>English / Search Keywords</label>
+            <input type="text" id="foodKeywordsInput" class="input-box" placeholder="e.g. chicken biryani">
+          </div>
+          <div class="form-group">
+            <label>வகை (Category)</label>
+            <input type="text" id="foodCatInput" class="input-box" placeholder="e.g. Biryani">
+          </div>
+          <div class="form-group">
+            <label>விலை ₹ (Price)</label>
+            <input type="number" id="foodPriceInput" class="input-box" placeholder="e.g. 160">
+          </div>
+        </div>
+        <div style="display:flex; gap: 8px; margin-top: 6px;">
+          <button class="btn-action" onclick="saveFoodItem()">Save Food</button>
+          <button class="btn-action" style="background:#64748b;" onclick="resetFoodForm()">Reset</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+          <h2 style="font-size: 1.05rem;">மெனு பட்டியல் (<span id="menuCount">0</span>)</h2>
+          <input type="text" id="menuFilterInput" placeholder="Filter..." class="input-box" style="width:130px; padding:5px 8px; font-size:0.8rem;" onkeyup="renderFoodManagementTable()">
+        </div>
+        <div style="overflow-x: auto; max-height: 400px;">
+          <table class="styled-table" id="foodManagementTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price (₹)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. REPORTS TAB -->
+    <div id="tab-reports" class="tab-content">
+      <div class="card">
+        <h2 style="margin-bottom: 10px; font-size: 1.05rem; color: var(--primary);">விற்பனை அறிக்கை (Sales Reports)</h2>
+        <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px;">
+          <button class="cat-badge active" id="repFilter-daily" onclick="filterReports('daily')">Daily (இன்று)</button>
+          <button class="cat-badge" id="repFilter-weekly" onclick="filterReports('weekly')">Weekly (வாரம்)</button>
+          <button class="cat-badge" id="repFilter-monthly" onclick="filterReports('monthly')">Monthly (மாதம்)</button>
+          <button class="cat-badge" id="repFilter-yearly" onclick="filterReports('yearly')">Yearly (வருடம்)</button>
+          <button class="cat-badge" id="repFilter-all" onclick="filterReports('all')">All Bills</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 14px;">
+          <div style="background: #eef2ff; padding: 10px; border-radius: 8px; border: 1px solid #c7d2fe;">
+            <div style="font-size: 0.72rem; color: #4338ca; font-weight: 800;">TOTAL SALES</div>
+            <div id="repTotalSales" style="font-size: 1.15rem; font-weight: 900; color: #3730a3; margin-top: 2px;">₹ 0</div>
+          </div>
+          <div style="background: #ecfdf5; padding: 10px; border-radius: 8px; border: 1px solid #a7f3d0;">
+            <div style="font-size: 0.72rem; color: #065f46; font-weight: 800;">CASH TOTAL</div>
+            <div id="repCashSales" style="font-size: 1.15rem; font-weight: 900; color: #047857; margin-top: 2px;">₹ 0</div>
+          </div>
+          <div style="background: #fdf2f8; padding: 10px; border-radius: 8px; border: 1px solid #fbcfe8;">
+            <div style="font-size: 0.72rem; color: #9d174d; font-weight: 800;">UPI TOTAL</div>
+            <div id="repUpiSales" style="font-size: 1.15rem; font-weight: 900; color: #be185d; margin-top: 2px;">₹ 0</div>
+          </div>
+          <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <div style="font-size: 0.72rem; color: #475569; font-weight: 800;">TOTAL BILLS</div>
+            <div id="repBillCount" style="font-size: 1.15rem; font-weight: 900; color: #1e293b; margin-top: 2px;">0</div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 0.9rem; margin-bottom: 6px;">விற்பனை பதிவுகள்</h3>
+        <div style="overflow-x: auto; max-height: 350px;">
+          <table class="styled-table" id="reportTable">
+            <thead>
+              <tr>
+                <th>Bill</th>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Pay</th>
+                <th>Items</th>
+                <th>Total (₹)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. SETTINGS TAB -->
+    <div id="tab-settings" class="tab-content">
+      <div class="card">
+        <h2 style="margin-bottom: 12px; font-size: 1.05rem; color: var(--primary);">அமைப்புகள் (Settings)</h2>
+        
+        <div class="form-group">
+          <label style="color:#059669;">🖼️ ஹோட்டல் லோகோ படம் (Upload Logo Image)</label>
+          <input type="file" id="logoFileInput" class="input-box" accept="image/*" onchange="uploadLogoImage(this)">
+          <div id="logoPreviewStatus" style="font-size:0.8rem; font-weight:bold; color:#059669; margin-top:-4px; margin-bottom:10px;"></div>
+        </div>
+
+        <div class="form-group">
+          <label>ஹோட்டல் பெயர் (Hotel Name)</label>
+          <input type="text" id="setRestName" class="input-box" value="தலப்பாக்கட்டு மாப்பிள்ளை ரெஸ்டாரன்ட்">
+        </div>
+        <div class="form-group">
+          <label>முகவரி (Single Line Address)</label>
+          <input type="text" id="setRestAddr" class="input-box" value="IOB வங்கி அருகில், அம்பலவாணபுரம், வி.கே புரம் - 627425">
+        </div>
+        <div class="form-group">
+          <label>தொலைபேசி எண் (Phone)</label>
+          <input type="text" id="setRestPhone" class="input-box" value="9677553400">
+        </div>
+        <div class="form-group">
+          <label>பில் முடிவு வாசகம் 1 (Footer 1)</label>
+          <input type="text" id="setFooter1" class="input-box" value="நன்றி மீண்டும் வருக">
+        </div>
+        <div class="form-group">
+          <label>பில் முடிவு வாசகம் 2 (Footer 2)</label>
+          <input type="text" id="setFooter2" class="input-box" value="மொத்த ஆர்டர்கள் வரவேற்கப்படுகிறது..">
+        </div>
+        <button class="btn-action" onclick="saveSettings()">அமைப்புகளைச் சேமிக்கவும்</button>
+      </div>
+
+      <div class="card">
+        <h3 style="color: #dc2626; margin-bottom: 6px; font-size: 0.95rem;">Clear Data</h3>
+        <p style="font-size: 0.78rem; color: #64748b; margin-bottom: 10px;">அனைத்து விற்பனைப் பதிவுகளையும் அழிக்க (Password Required):</p>
+        <button class="btn-action" style="background: #dc2626;" onclick="clearAllSalesHistory()">Clear Sales History</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FIXED BOTTOM NAVIGATION BAR -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-btn-billing" onclick="switchTab('billing')">
+      <span style="font-size:1.35rem;">🧾</span>
+      <span>Billing</span>
+    </button>
+    <button class="nav-btn" id="nav-btn-foods" onclick="switchTab('foods')">
+      <span style="font-size:1.35rem;">🍲</span>
+      <span>Foods</span>
+    </button>
+    <button class="nav-btn" id="nav-btn-reports" onclick="switchTab('reports')">
+      <span style="font-size:1.35rem;">📊</span>
+      <span>Report</span>
+    </button>
+    <button class="nav-btn" id="nav-btn-settings" onclick="openSettingsTab()">
+      <span style="font-size:1.35rem;">⚙️</span>
+      <span>Setting</span>
+    </button>
+  </nav>
+
+  <!-- 80MM THERMAL RECEIPT TEMPLATE -->
+  <div id="printReceipt">
+    <div class="p-center">
+      <img id="prLogoImg" src="" alt="Logo" class="p-logo" style="display:none;">
+    </div>
+    <div class="p-center p-title" id="prRestName">தலப்பாக்கட்டு மாப்பிள்ளை ரெஸ்டாரன்ட்</div>
+    <div class="p-center p-sub" id="prRestAddr">IOB வங்கி அருகில், அம்பலவாணபுரம், வி.கே புரம் - 627425</div>
+    <div class="p-center p-sub">Cell: <span id="prRestPhone">9677553400</span></div>
+    
+    <div class="p-divider"></div>
+    
+    <div style="display:flex; justify-content:space-between;">
+      <span>Bill No: <strong id="prBillNo">#1001</strong></span>
+      <span id="prOrderType"><strong>[DINE-IN]</strong></span>
+    </div>
+    <div>Date: <span id="prDateTime"></span></div>
+    <div>Payment: <span id="prPayMethod"><strong>CASH</strong></span></div>
+    
+    <div class="p-divider"></div>
+    
+    <table class="p-table">
+      <thead>
+        <tr style="border-bottom: 1.5px dashed #000;">
+          <th style="text-align:left; width:50%;">ITEM</th>
+          <th style="text-align:center; width:20%;">QTY</th>
+          <th style="text-align:right; width:30%;">AMT(Rs)</th>
+        </tr>
+      </thead>
+      <tbody id="prItemList"></tbody>
+    </table>
+    
+    <div class="p-divider"></div>
+    
+    <div style="display:flex; justify-content:space-between; font-size:16px;">
+      <span><strong>NET TOTAL:</strong></span>
+      <span><strong id="prGrandTotal">Rs. 0.00</strong></span>
+    </div>
+    
+    <div class="p-divider"></div>
+    
+    <div class="p-center" style="font-weight:900;" id="prFooter1">நன்றி மீண்டும் வருக</div>
+    <div class="p-center p-sub" id="prFooter2">மொத்த ஆர்டர்கள் வரவேற்கப்படுகிறது..</div>
+    <div class="p-center p-sub" style="margin-top:4px;">*** THANK YOU ***</div>
+  </div>
+
+  <script>
+    var defaultFoods = [
+      { id: 113, name: "ஆப்பிள் ஜூஸ்", en: "apple juice", category: "Fresh Juice", price: 80 },
+      { id: 114, name: "ஆரஞ்சு ஜூஸ்", en: "orange juice", category: "Fresh Juice", price: 70 },
+      { id: 115, name: "திராட்சை ஜூஸ்", en: "grapes grape juice", category: "Fresh Juice", price: 80 },
+      { id: 116, name: "பைன் ஆப்பிள்", en: "pineapple juice", category: "Fresh Juice", price: 60 },
+      { id: 117, name: "வாழைப்பழம் ஜூஸ்", en: "banana juice", category: "Fresh Juice", price: 70 },
+      { id: 118, name: "சாத்துக்குடி ஜூஸ்", en: "sweet lime sathukudi juice", category: "Fresh Juice", price: 60 },
+      { id: 119, name: "லெமன் ஜூஸ்", en: "lemon juice", category: "Fresh Juice", price: 30 },
+      { id: 120, name: "தர்பூசணி ஜூஸ்", en: "watermelon juice", category: "Fresh Juice", price: 50 },
+      { id: 121, name: "கிர்ணி பழம் ஜூஸ்", en: "muskmelon kirni juice", category: "Fresh Juice", price: 60 },
+      { id: 122, name: "சப்போட்டா ஜூஸ்", en: "sapota chikoo juice", category: "Fresh Juice", price: 60 },
+      { id: 123, name: "மாதுளை ஜூஸ்", en: "pomegranate juice", category: "Fresh Juice", price: 80 },
+      { id: 124, name: "கேரட் ஜூஸ்", en: "carrot juice", category: "Fresh Juice", price: 60 },
+      { id: 125, name: "நெல்லிக்காய் ஜூஸ்", en: "amla gooseberry juice", category: "Fresh Juice", price: 50 },
+      { id: 126, name: "பீட்ரூட் ஜூஸ்", en: "beetroot juice", category: "Fresh Juice", price: 50 },
+      { id: 127, name: "வெண்ணிலா மில்க் ஷேக்", en: "vanilla milk shake", category: "Milk Shake", price: 100 },
+      { id: 128, name: "ஸ்டாபெரி மில்க் ஷேக்", en: "strawberry milk shake", category: "Milk Shake", price: 120 },
+      { id: 129, name: "பட்டர் ஸ்கோச் மில்க் ஷேக்", en: "butterscotch butter scotch milk shake", category: "Milk Shake", price: 120 },
+      { id: 130, name: "மேங்கோ மில்க் ஷேக்", en: "mango milk shake", category: "Milk Shake", price: 100 },
+      { id: 131, name: "பிஸ்தா மில்க் ஷேக்", en: "pista milk shake", category: "Milk Shake", price: 120 },
+      { id: 132, name: "சாக்லேட் மில்க் ஷேக்", en: "chocolate milk shake", category: "Milk Shake", price: 130 },
+      { id: 133, name: "ஒரியோ மில்க் ஷேக்", en: "oreo milk shake", category: "Milk Shake", price: 150 },
+      { id: 134, name: "கிட்கட் மில்க் ஷேக்", en: "kitkat milk shake", category: "Milk Shake", price: 150 },
+      { id: 135, name: "லெமன் மின்ட்", en: "lemon mint mojito", category: "Mint", price: 90 },
+      { id: 136, name: "லெமன் சோடா", en: "lemon soda", category: "Mint", price: 60 },
+      { id: 137, name: "புளூ மென்ட்", en: "blue mint curacao", category: "Mint", price: 90 },
+      { id: 138, name: "ஸ்வீட்கான் சூப்", en: "sweet corn sweetcorn veg soup", category: "Veg Soup", price: 60 },
+      { id: 139, name: "ஹாட் சவர் சூப்", en: "hot sour hot and sour soup", category: "Veg Soup", price: 80 },
+      { id: 140, name: "மான்சோ சூப்", en: "manchow soup veg", category: "Veg Soup", price: 70 },
+      { id: 141, name: "மஸ்ரூம் சூப்", en: "mushroom soup", category: "Veg Soup", price: 65 },
+      { id: 142, name: "வெஜ் சூப்", en: "veg plain soup", category: "Veg Soup", price: 40 },
+      { id: 143, name: "மட்டன் பெப்பர் சூப்", en: "mutton pepper soup", category: "Non-Veg Soup", price: 110 },
+      { id: 144, name: "ஸ்வீட் கான் சிக்கன் சூப்", en: "sweet corn chicken soup", category: "Non-Veg Soup", price: 110 },
+      { id: 145, name: "ஹாட் சவர் சிக்கன் சூப்", en: "hot sour chicken soup", category: "Non-Veg Soup", price: 130 },
+      { id: 146, name: "மான்சோ சிக்கன் சூப்", en: "manchow chicken soup", category: "Non-Veg Soup", price: 110 },
+      { id: 147, name: "செட்டிநாடு சிக்கன் சூப்", en: "chettinad chicken soup", category: "Non-Veg Soup", price: 110 },
+      { id: 148, name: "பொரித்த பூரி", en: "poori poritha puri", category: "Tiffin", price: 15 },
+      { id: 149, name: "கோதுமை பூரி", en: "wheat godhumai poori puri", category: "Tiffin", price: 15 },
+      { id: 150, name: "நூல் புரோட்டா", en: "nool parotta", category: "Tiffin", price: 20 },
+      { id: 151, name: "சில்லி புரோட்டா", en: "chilli chilli parotta", category: "Tiffin", price: 80 },
+      { id: 152, name: "முட்டை சில்லி புரோட்டா", en: "egg chilli parotta muttai", category: "Tiffin", price: 120 },
+      { id: 153, name: "முட்டை வீச்சு புரோட்டா", en: "egg veechu parotta muttai", category: "Tiffin", price: 80 },
+      { id: 154, name: "முட்டை கொத்து புரோட்டா", en: "egg kothu parotta muttai", category: "Tiffin", price: 100 },
+      { id: 155, name: "சிக்கன் கொத்து புரோட்டா", en: "chicken kothu parotta chukka", category: "Tiffin", price: 160 },
+      { id: 156, name: "சில்லி சிக்கன் புரோட்டா", en: "chilli chicken parotta", category: "Tiffin", price: 160 },
+      { id: 157, name: "சிலோன் புரோட்டா", en: "ceylon plain parotta", category: "Tiffin", price: 100 },
+      { id: 158, name: "சிலோன் சிக்கன் புரோட்டா", en: "ceylon chicken parotta", category: "Tiffin", price: 160 },
+      { id: 159, name: "இலை புரோட்டா", en: "ilai parotta leaf", category: "Tiffin", price: 160 },
+      { id: 160, name: "சிக்கன் ரோல்", en: "chicken roll", category: "Tiffin", price: 100 },
+      { id: 161, name: "கடாய் முட்டை", en: "kadai muttai egg", category: "Tiffin", price: 120 },
+      { id: 162, name: "சிக்கன் கடாய்", en: "chicken kadai tiffin", category: "Tiffin", price: 170 },
+      { id: 163, name: "வெஜ் சாப்பாடு", en: "veg meals saapadu lunch", category: "Meals", price: 100 },
+      { id: 164, name: "மீன் சாப்பாடு", en: "fish meals meen saapadu", category: "Meals", price: 120 },
+      { id: 165, name: "சிக்கன் சாப்பாடு", en: "chicken meals saapadu", category: "Meals", price: 150 },
+      { id: 166, name: "மட்டன் சாப்பாடு", en: "mutton meals saapadu", category: "Meals", price: 240 },
+      { id: 167, name: "நாட்டு கோழி சாப்பாடு", en: "nattu kozhi chicken meals saapadu", category: "Meals", price: 200 },
+      { id: 168, name: "எம்டி பிரியாணி (Kuska)", en: "empty biryani kuska biriyani", category: "Biryani", price: 80 },
+      { id: 169, name: "முட்டை பிரியாணி", en: "egg biryani muttai biriyani", category: "Biryani", price: 100 },
+      { id: 170, name: "நாட்டுக்கோழி பிரியாணி", en: "nattu kozhi biryani chicken", category: "Biryani", price: 200 },
+      { id: 171, name: "சிக்கன் 65 பிரியாணி", en: "chicken 65 biryani biriyani", category: "Biryani", price: 160 },
+      { id: 172, name: "கடாய் சிக்கன் பிரியாணி", en: "kadai chicken biryani biriyani", category: "Biryani", price: 160 },
+      { id: 173, name: "காடை பிரியாணி", en: "kadai kaadai quail biryani", category: "Biryani", price: 170 },
+      { id: 175, name: "மட்டன் பிரியாணி", en: "mutton biryani briyani", category: "Biryani", price: 250 },
+      { id: 176, name: "சிக்கன் 65", en: "chicken 65 starter chukka", category: "Non-Veg Starters", price: 80 },
+      { id: 177, name: "சிக்கன் 65 போன்லெஸ்", en: "chicken 65 boneless", category: "Non-Veg Starters", price: 120 },
+      { id: 178, name: "சிக்கன் லாலிபாப்", en: "chicken lollipop starter", category: "Non-Veg Starters", price: 150 },
+      { id: 179, name: "டிராகன் சிக்கன்", en: "dragon chicken", category: "Non-Veg Starters", price: 130 },
+      { id: 180, name: "சிக்கன் லெக் பீஸ்", en: "chicken leg piece fry", category: "Non-Veg Starters", price: 100 },
+      { id: 181, name: "காடை பொரித்தது", en: "kaadai fry quail", category: "Non-Veg Starters", price: 100 },
+      { id: 182, name: "காடை சுக்கா", en: "kaadai chukka sukka quail", category: "Non-Veg Starters", price: 150 },
+      { id: 183, name: "மட்டன் சுக்கா", en: "mutton sukka chukka fry", category: "Non-Veg Starters", price: 180 },
+      { id: 184, name: "மட்டன் குடல் சுக்கா", en: "mutton kudal boti chukka sukka", category: "Non-Veg Starters", price: 130 },
+      { id: 185, name: "மட்டன் லிவர் சுக்கா", en: "mutton liver chukka fry", category: "Non-Veg Starters", price: 110 },
+      { id: 186, name: "மட்டன் மூளை ப்ரை", en: "mutton brain moolai fry", category: "Non-Veg Starters", price: 140 },
+      { id: 187, name: "பொரித்த மீன்", en: "fish fry meen porithathu", category: "Non-Veg Starters", price: 120 },
+      { id: 188, name: "நாட்டுக்கோழி சுக்கா", en: "nattu kozhi chukka chicken", category: "Non-Veg Starters", price: 160 },
+      { id: 189, name: "இந்தியன் நாட்டுக்கோழி", en: "indian nattukozhi chukka chicken", category: "Non-Veg Starters", price: 160 },
+      { id: 190, name: "பிரெஞ்ச் ப்ரை", en: "french fries potato", category: "Starter Veg", price: 90 },
+      { id: 191, name: "வெஜ் ஸ்பிரிங் ரோல்", en: "veg spring roll", category: "Starter Veg", price: 70 },
+      { id: 192, name: "பேபிகான் 65", en: "baby corn 65 starter", category: "Starter Veg", price: 80 },
+      { id: 193, name: "கோபி 65", en: "gobi 65 cauliflower", category: "Starter Veg", price: 90 },
+      { id: 194, name: "பன்னீர் 65", en: "paneer 65 cottage cheese", category: "Starter Veg", price: 150 },
+      { id: 195, name: "மஸ்ரூம் 65", en: "mushroom 65", category: "Starter Veg", price: 120 },
+      { id: 196, name: "வெஜ் ரைஸ் / நூடுல்ஸ்", en: "veg fried rice noodles", category: "Rice / Noodles", price: 120 },
+      { id: 197, name: "மஸ்ரூம் ரைஸ் / நூடுல்ஸ்", en: "mushroom fried rice noodles", category: "Rice / Noodles", price: 130 },
+      { id: 198, name: "பன்னீர் ரைஸ் / நூடுல்ஸ்", en: "paneer fried rice noodles", category: "Rice / Noodles", price: 160 },
+      { id: 199, name: "கோபி ரைஸ் / நூடுல்ஸ்", en: "gobi fried rice noodles", category: "Rice / Noodles", price: 110 },
+      { id: 200, name: "எக் ரைஸ் / நூடுல்ஸ்", en: "egg fried rice noodles muttai", category: "Rice / Noodles", price: 100 },
+      { id: 201, name: "சிக்கன் ரைஸ் / நூடுல்ஸ்", en: "chicken fried rice noodles", category: "Rice / Noodles", price: 130 },
+      { id: 202, name: "செஷ்வான் வெஜ் ரைஸ்", en: "schezwan veg fried rice", category: "Schezwan Variety", price: 120 },
+      { id: 203, name: "செஷ்வான் மஸ்ரூம் ரைஸ்", en: "schezwan mushroom rice", category: "Schezwan Variety", price: 130 },
+      { id: 204, name: "செஷ்வான் பன்னீர் ரைஸ்", en: "schezwan paneer rice", category: "Schezwan Variety", price: 160 },
+      { id: 205, name: "செஷ்வான் கோபி ரைஸ்", en: "schezwan gobi rice", category: "Schezwan Variety", price: 120 },
+      { id: 206, name: "செஷ்வான் எக் ரைஸ்", en: "schezwan egg muttai rice", category: "Schezwan Variety", price: 110 },
+      { id: 207, name: "செஷ்வான் சிக்கன் ரைஸ்", en: "schezwan chicken rice noodles", category: "Schezwan Variety", price: 150 },
+      { id: 208, name: "நான் (Naan)", en: "naan tandoori plain", category: "Tandoori", price: 60 },
+      { id: 209, name: "பட்டர் நான்", en: "butter naan", category: "Tandoori", price: 70 },
+      { id: 210, name: "கார்லிக் நான்", en: "garlic naan", category: "Tandoori", price: 80 },
+      { id: 211, name: "ரொட்டி (Roti)", en: "tandoori roti plain", category: "Tandoori", price: 60 },
+      { id: 212, name: "ஆலூ ரொட்டி", en: "aloo roti potato", category: "Tandoori", price: 90 },
+      { id: 213, name: "பட்டர் ரொட்டி", en: "butter roti", category: "Tandoori", price: 80 },
+      { id: 214, name: "கிரீல் நான்", en: "grill naan", category: "Tandoori", price: 60 },
+      { id: 215, name: "புல்கா", en: "phulka pulka", category: "Tandoori", price: 50 },
+      { id: 216, name: "பட்டர் புல்கா", en: "butter phulka pulka", category: "Tandoori", price: 60 },
+      { id: 217, name: "சோலா பூரி", en: "chola poori bhature", category: "Tandoori", price: 100 },
+      { id: 218, name: "சில்லி கோபி", en: "chilli gobi gravy", category: "Veg Gravy", price: 130 },
+      { id: 219, name: "கோபி மஞ்சூரியன்", en: "gobi manchurian gravy", category: "Veg Gravy", price: 130 },
+      { id: 220, name: "மஸ்ரூம் மஞ்சூரியன்", en: "mushroom manchurian gravy", category: "Veg Gravy", price: 150 },
+      { id: 221, name: "சில்லி பன்னீர்", en: "chilli paneer gravy", category: "Veg Gravy", price: 170 },
+      { id: 222, name: "பன்னீர் மஞ்சூரியன்", en: "paneer manchurian gravy", category: "Veg Gravy", price: 170 },
+      { id: 223, name: "சில்லி பேபி கான்", en: "chilli baby corn gravy", category: "Veg Gravy", price: 130 },
+      { id: 224, name: "பேபி கான் மஞ்சூரியன்", en: "baby corn manchurian", category: "Veg Gravy", price: 120 },
+      { id: 225, name: "சால்ட் பெப்பர் வெஜ்", en: "salt pepper veg gravy", category: "Veg Gravy", price: 130 },
+      { id: 226, name: "கோபி பெப்பர்", en: "gobi pepper gravy", category: "Veg Gravy", price: 120 },
+      { id: 227, name: "பன்னீர் பெப்பர்", en: "paneer pepper gravy", category: "Veg Gravy", price: 130 },
+      { id: 228, name: "மஸ்ரூம் பெப்பர்", en: "mushroom pepper gravy", category: "Veg Gravy", price: 160 },
+      { id: 229, name: "பன்னீர் பட்டர் மசாலா", en: "paneer butter masala", category: "Veg Gravy", price: 160 },
+      { id: 230, name: "பன்னீர் டிக்கா மசாலா", en: "paneer tikka masala", category: "Veg Gravy", price: 170 },
+      { id: 231, name: "கிரீன் பீஸ் மசாலா", en: "green peas masala", category: "Veg Gravy", price: 120 },
+      { id: 232, name: "கடாய் கோபி மசாலா", en: "kadai gobi masala", category: "Veg Gravy", price: 120 },
+      { id: 233, name: "பிண்டி மசாலா", en: "bhindi bindi ladies finger masala", category: "Veg Gravy", price: 120 },
+      { id: 234, name: "கடாய் பன்னீர்", en: "kadai paneer gravy", category: "Veg Gravy", price: 170 },
+      { id: 235, name: "கடாய் வெஜிடபிள்", en: "kadai vegetable mix", category: "Veg Gravy", price: 80 },
+      { id: 236, name: "கடாய் மஸ்ரூம்", en: "kadai mushroom gravy", category: "Veg Gravy", price: 130 },
+      { id: 237, name: "மட்டர் பன்னீர்", en: "mutter matar paneer", category: "Veg Gravy", price: 170 },
+      { id: 238, name: "மஸ்ரூம் மசாலா", en: "mushroom masala gravy", category: "Veg Gravy", price: 130 },
+      { id: 239, name: "கோபி மசாலா", en: "gobi masala gravy", category: "Veg Gravy", price: 110 },
+      { id: 240, name: "மிக்சர் வெஜ்", en: "mixed veg curry gravy", category: "Veg Gravy", price: 130 },
+      { id: 241, name: "சிக்கன் தந்தூரி (Full)", en: "chicken tandoori full", category: "Tandoori Non-Veg", price: 440 },
+      { id: 242, name: "1/2 சிக்கன் தந்தூரி", en: "chicken tandoori half", category: "Tandoori Non-Veg", price: 220 },
+      { id: 243, name: "1/4 சிக்கன் தந்தூரி", en: "chicken tandoori quarter", category: "Tandoori Non-Veg", price: 110 },
+      { id: 244, name: "கிரில் சிக்கன் (Full)", en: "grill chicken full", category: "Tandoori Non-Veg", price: 440 },
+      { id: 245, name: "1/2 கிரில் சிக்கன்", en: "grill chicken half", category: "Tandoori Non-Veg", price: 220 },
+      { id: 246, name: "1/4 கிரில் சிக்கன்", en: "grill chicken quarter", category: "Tandoori Non-Veg", price: 110 },
+      { id: 247, name: "முட்டை மாஸ்", en: "egg mass muttai", category: "Egg Variety", price: 35 },
+      { id: 248, name: "முட்டை பொடிமாஸ்", en: "egg podimas scrambled egg", category: "Egg Variety", price: 35 },
+      { id: 249, name: "கலக்கி", en: "kalakki egg muttai", category: "Egg Variety", price: 25 },
+      { id: 250, name: "ஹாஃப் பாயில்", en: "half boil bullseye egg", category: "Egg Variety", price: 20 },
+      { id: 252, name: "மட்டன் கீமா முட்டை", en: "mutton keema egg muttai", category: "Egg Variety", price: 90 },
+      { id: 253, name: "சிக்கன் மசாலா", en: "chicken masala gravy", category: "Non-Veg Gravy", price: 150 },
+      { id: 254, name: "சிக்கன் வறுவல் கிரேவி", en: "chicken varuval fry gravy", category: "Non-Veg Gravy", price: 150 },
+      { id: 255, name: "செட்டிநாடு சிக்கன்", en: "chettinad chicken gravy", category: "Non-Veg Gravy", price: 160 },
+      { id: 256, name: "கடாய் சிக்கன்", en: "kadai chicken gravy", category: "Non-Veg Gravy", price: 160 },
+      { id: 257, name: "ஹைதராபாத் சிக்கன்", en: "hyderabadi hyderabad chicken gravy", category: "Non-Veg Gravy", price: 170 },
+      { id: 258, name: "பட்டர் சிக்கன்", en: "butter chicken masala", category: "Non-Veg Gravy", price: 180 },
+      { id: 259, name: "சிக்கன் டிக்கா மசாலா", en: "chicken tikka masala gravy", category: "Non-Veg Gravy", price: 180 },
+      { id: 260, name: "மட்டன் மசாலா", en: "mutton masala gravy", category: "Non-Veg Gravy", price: 220 },
+      { id: 261, name: "மட்டன் வறுவல் கிரேவி", en: "mutton varuval gravy", category: "Non-Veg Gravy", price: 220 },
+      { id: 262, name: "மட்டன் சுக்கா கிரேவி", en: "mutton chukka sukka gravy", category: "Non-Veg Gravy", price: 230 },
+      { id: 263, name: "மட்டன் குடல் கிரேவி", en: "mutton kudal boti gravy", category: "Non-Veg Gravy", price: 160 },
+      { id: 264, name: "மட்டன் லிவர் கிரேவி", en: "mutton liver gravy", category: "Non-Veg Gravy", price: 150 },
+      { id: 265, name: "மீன் கிரேவி", en: "fish meen gravy curry", category: "Non-Veg Gravy", price: 140 }
+    ];
+
+    var foods = defaultFoods;
+    try {
+      var stored = localStorage.getItem('tm_foods_clean_v2');
+      if (stored) {
+        foods = JSON.parse(stored);
+      }
+    } catch(e) {
+      foods = defaultFoods;
+    }
+
+    var salesHistory = [];
+    try {
+      var sStored = localStorage.getItem('tm_sales_v2');
+      if (sStored) {
+        salesHistory = JSON.parse(sStored);
+      }
+    } catch(e) {}
+
+    var cart = [];
+    var currentOrderType = 'DINE-IN';
+    var currentPayMethod = 'CASH';
+    var APP_PASS = '123';
+
+    // Stored Logo Handling
+    var savedLogo = localStorage.getItem('tm_hotel_logo') || '';
+    if (savedLogo) {
+      var prLogo = document.getElementById('prLogoImg');
+      if (prLogo) {
+        prLogo.src = savedLogo;
+        prLogo.style.display = 'block';
+      }
+    }
+
+    function uploadLogoImage(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          savedLogo = e.target.result;
+          localStorage.setItem('tm_hotel_logo', savedLogo);
+          var prLogo = document.getElementById('prLogoImg');
+          if (prLogo) {
+            prLogo.src = savedLogo;
+            prLogo.style.display = 'block';
+          }
+          var status = document.getElementById('logoPreviewStatus');
+          if (status) status.innerText = '✅ லோகோ படம் வெற்றிகரமாகச் சேமிக்கப்பட்டது!';
+          alert('ஹோட்டல் லோகோ வெற்றிகரமாகச் சேமிக்கப்பட்டது!');
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function updateClock() {
+      var now = new Date();
+      var el = document.getElementById('currentClock');
+      if (el) {
+        el.innerText = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function switchTab(tabId) {
+      var contents = document.querySelectorAll('.tab-content');
+      for (var i = 0; i < contents.length; i++) {
+        contents[i].classList.remove('active');
+      }
+      var navBtns = document.querySelectorAll('.nav-btn');
+      for (var j = 0; j < navBtns.length; j++) {
+        navBtns[j].classList.remove('active');
+      }
+      
+      var targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) targetTab.classList.add('active');
+      
+      var targetNav = document.getElementById('nav-btn-' + tabId);
+      if (targetNav) targetNav.classList.add('active');
+
+      if (tabId === 'foods') renderFoodManagementTable();
+      if (tabId === 'reports') filterReports('daily');
+    }
+
+    function openSettingsTab() {
+      var entered = prompt('அமைப்புகள் (Settings) பக்கத்திற்கு கடவுச்சொல்லை உள்ளிடவும்:');
+      if (entered === APP_PASS) {
+        switchTab('settings');
+        if (savedLogo) {
+          var status = document.getElementById('logoPreviewStatus');
+          if (status) status.innerText = '✅ லோகோ ஏற்கெனவே சேமிக்கப்பட்டுள்ளது.';
+        }
+      } else if (entered !== null) {
+        alert('தவறான கடவுச்சொல்! (Incorrect Password)');
+      }
+    }
+
+    function filterFoodDropdown(val) {
+      var sel = document.getElementById('foodSelectBox');
+      if (!sel) return;
+      var term = (val || '').trim().toLowerCase();
+
+      var filtered = [];
+      if (!term) {
+        filtered = foods;
+      } else {
+        filtered = foods.filter(function(f) {
+          var nameMatch = f.name.toLowerCase().indexOf(term) !== -1;
+          var enMatch = f.en ? (f.en.toLowerCase().indexOf(term) !== -1) : false;
+          var idMatch = String(f.id).indexOf(term) !== -1;
+          var catMatch = f.category.toLowerCase().indexOf(term) !== -1;
+          return nameMatch || enMatch || idMatch || catMatch;
+        });
+      }
+
+      var html = '';
+      if (filtered.length === 0) {
+        html = '<option value="">உணவு கிடைக்கவில்லை (No items found)</option>';
+      } else {
+        for (var i = 0; i < filtered.length; i++) {
+          var item = filtered[i];
+          html += '<option value="' + item.id + '">#' + item.id + ' - ' + item.name + ' (₹' + item.price + ')</option>';
+        }
+      }
+      sel.innerHTML = html;
+    }
+
+    function adjustQuickQty(delta) {
+      var input = document.getElementById('quickQtyInput');
+      if (!input) return;
+      var val = parseInt(input.value) || 1;
+      val = Math.max(1, val + delta);
+      input.value = val;
+    }
+
+    function addSelectedFoodToCart() {
+      var sel = document.getElementById('foodSelectBox');
+      if (!sel || !sel.value) {
+        alert('உணவைத் தேர்ந்தெடுக்கவும்!');
+        return;
+      }
+      var selectedId = parseInt(sel.value);
+      var itemObj = null;
+      for (var i = 0; i < foods.length; i++) {
+        if (foods[i].id === selectedId) {
+          itemObj = foods[i];
+          break;
+        }
+      }
+
+      if (!itemObj) {
+        alert('உணவைத் தேர்ந்தெடுக்கவும்!');
+        return;
+      }
+
+      var qtyInput = document.getElementById('quickQtyInput');
+      var qty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+      
+      var existing = null;
+      for (var j = 0; j < cart.length; j++) {
+        if (cart[j].id === itemObj.id) {
+          existing = cart[j];
+          break;
+        }
+      }
+
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({
+          id: itemObj.id,
+          name: itemObj.name,
+          category: itemObj.category,
+          price: itemObj.price,
+          qty: qty
+        });
+      }
+
+      if (qtyInput) qtyInput.value = '1';
+      renderCart();
+    }
+
+    function updateCartQtyDirect(id, newQty) {
+      var val = parseInt(newQty);
+      for (var i = 0; i < cart.length; i++) {
+        if (cart[i].id === id) {
+          if (isNaN(val) || val <= 0) {
+            cart.splice(i, 1);
+          } else {
+            cart[i].qty = val;
+          }
+          break;
+        }
+      }
+      renderCart();
+    }
+
+    function removeCartItem(id) {
+      cart = cart.filter(function(c) { return c.id !== id; });
+      renderCart();
+    }
+
+    function renderCart() {
+      var tbody = document.getElementById('cartTableBody');
+      if (!tbody) return;
+      if (cart.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 25px 0; color:#94a3b8; font-weight:800;">உணவுப் பொருட்களைச் சேர்க்கவும்</td></tr>';
+        var totalEl = document.getElementById('cartGrandTotal');
+        if (totalEl) totalEl.innerText = '₹ 0.00';
+        return;
+      }
+
+      var html = '';
+      var total = 0;
+      for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        var itemTotal = item.price * item.qty;
+        total += itemTotal;
+        html += '<tr>' +
+                  '<td>' +
+                    '<div class="cart-item-title">' + item.name + '</div>' +
+                    '<div style="font-size:0.72rem; color:#64748b;">₹' + item.price + '</div>' +
+                  '</td>' +
+                  '<td style="text-align:center;">' +
+                    '<input type="number" min="1" class="inline-qty-input" value="' + item.qty + '" onchange="updateCartQtyDirect(' + item.id + ', this.value)">' +
+                  '</td>' +
+                  '<td style="text-align:right; font-weight:900;">₹ ' + itemTotal.toFixed(2) + '</td>' +
+                  '<td style="text-align:center;">' +
+                    '<button class="del-btn" onclick="removeCartItem(' + item.id + ')">×</button>' +
+                  '</td>' +
+                '</tr>';
+      }
+      tbody.innerHTML = html;
+      var gTotalEl = document.getElementById('cartGrandTotal');
+      if (gTotalEl) gTotalEl.innerText = '₹ ' + total.toFixed(2);
+    }
+
+    function clearCart() {
+      cart = [];
+      renderCart();
+    }
+
+    function setOrderType(type) {
+      currentOrderType = type;
+      var opts = document.querySelectorAll('#orderTypeToggle .toggle-opt');
+      if (opts.length >= 2) {
+        opts[0].classList.toggle('active', type === 'DINE-IN');
+        opts[1].classList.toggle('active', type === 'PARCEL');
+      }
+      var disp = document.getElementById('cartOrderTypeDisplay');
+      if (disp) disp.innerText = type;
+    }
+
+    function setPayMethod(method) {
+      currentPayMethod = method;
+      var opts = document.querySelectorAll('#payTypeToggle .toggle-opt');
+      if (opts.length >= 2) {
+        opts[0].classList.toggle('active', method === 'CASH');
+        opts[1].classList.toggle('active', method === 'UPI');
+      }
+    }
+
+    function getNextBillNo() {
+      if (salesHistory.length === 0) return 1001;
+      return salesHistory[salesHistory.length - 1].billNo + 1;
+    }
+
+    function updateActiveBillNo() {
+      var el = document.getElementById('activeBillNo');
+      if (el) el.innerText = '#' + getNextBillNo();
+    }
+
+    function processAndPrintBill() {
+      if (cart.length === 0) {
+        alert('பில் போடுவதற்கு முன் உணவுப் பொருட்களைச் சேர்க்கவும்!');
+        return;
+      }
+
+      var billNo = getNextBillNo();
+      var now = new Date();
+      var total = 0;
+      for (var k = 0; k < cart.length; k++) {
+        total += cart[k].price * cart[k].qty;
+      }
+
+      var orderRecord = {
+        billNo: billNo,
+        timestamp: now.toISOString(),
+        dateStr: now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}),
+        orderType: currentOrderType,
+        payMethod: currentPayMethod,
+        items: cart.slice(),
+        grandTotal: total
+      };
+
+      salesHistory.push(orderRecord);
+      try {
+        localStorage.setItem('tm_sales_v2', JSON.stringify(salesHistory));
+      } catch(e) {}
+
+      document.getElementById('prBillNo').innerText = '#' + billNo;
+      document.getElementById('prOrderType').innerText = '[' + currentOrderType + ']';
+      document.getElementById('prDateTime').innerText = orderRecord.dateStr;
+      document.getElementById('prPayMethod').innerText = currentPayMethod;
+      
+      var prItems = document.getElementById('prItemList');
+      var prHtml = '';
+      for (var m = 0; m < cart.length; m++) {
+        var it = cart[m];
+        prHtml += '<tr>' +
+                    '<td style="text-align:left; font-weight:900;">' + it.name + '</td>' +
+                    '<td style="text-align:center; font-weight:900;">' + it.qty + '</td>' +
+                    '<td style="text-align:right; font-weight:900;">' + (it.price * it.qty).toFixed(2) + '</td>' +
+                  '</tr>';
+      }
+      prItems.innerHTML = prHtml;
+
+      document.getElementById('prGrandTotal').innerText = 'Rs. ' + total.toFixed(2);
+
+      document.getElementById('prRestName').innerText = document.getElementById('setRestName').value;
+      document.getElementById('prRestAddr').innerText = document.getElementById('setRestAddr').value;
+      document.getElementById('prRestPhone').innerText = document.getElementById('setRestPhone').value;
+      document.getElementById('prFooter1').innerText = document.getElementById('setFooter1').value;
+      document.getElementById('prFooter2').innerText = document.getElementById('setFooter2').value;
+
+      var prLogo = document.getElementById('prLogoImg');
+      if (savedLogo) {
+        prLogo.src = savedLogo;
+        prLogo.style.display = 'block';
+      } else {
+        prLogo.style.display = 'none';
+      }
+
+      window.print();
+
+      clearCart();
+      updateActiveBillNo();
+    }
+
+    function renderFoodManagementTable() {
+      var tbody = document.querySelector('#foodManagementTable tbody');
+      if (!tbody) return;
+      var fInput = document.getElementById('menuFilterInput');
+      var filter = (fInput ? fInput.value : '').toLowerCase().trim();
+      
+      var filtered = foods.filter(function(f) { 
+        return f.name.toLowerCase().indexOf(filter) !== -1 || 
+               (f.en && f.en.toLowerCase().indexOf(filter) !== -1) ||
+               String(f.id).indexOf(filter) !== -1 ||
+               f.category.toLowerCase().indexOf(filter) !== -1;
+      });
+
+      var mCount = document.getElementById('menuCount');
+      if (mCount) mCount.innerText = foods.length;
+
+      var html = '';
+      for (var i = 0; i < filtered.length; i++) {
+        var item = filtered[i];
+        html += '<tr>' +
+                  '<td><strong>#' + item.id + '</strong></td>' +
+                  '<td><strong>' + item.name + '</strong><br><small style="color:#64748b;">' + (item.en || '') + '</small></td>' +
+                  '<td>' + item.category + '</td>' +
+                  '<td>₹ ' + item.price + '</td>' +
+                  '<td style="white-space:nowrap;">' +
+                    '<button class="cat-badge" style="background:#0284c7; color:white; padding:3px 8px;" onclick="editFoodItem(' + item.id + ')">Edit</button> ' +
+                    '<button class="cat-badge" style="background:#e11d48; color:white; padding:3px 8px;" onclick="deleteFoodItem(' + item.id + ')">Delete</button>' +
+                  '</td>' +
+                '</tr>';
+      }
+      tbody.innerHTML = html;
+    }
+
+    function saveFoodItem() {
+      var editId = document.getElementById('foodEditId').value;
+      var customId = parseInt(document.getElementById('foodIdInput').value);
+      var name = document.getElementById('foodNameInput').value.trim();
+      var keywords = document.getElementById('foodKeywordsInput').value.trim().toLowerCase();
+      var cat = document.getElementById('foodCatInput').value.trim();
+      var price = parseFloat(document.getElementById('foodPriceInput').value);
+
+      if (!name || !cat || isNaN(price)) {
+        alert('எல்லா விவரங்களையும் சரியாக உள்ளிடவும்!');
+        return;
+      }
+
+      if (editId) {
+        for (var i = 0; i < foods.length; i++) {
+          if (foods[i].id == editId) {
+            foods[i].name = name;
+            foods[i].en = keywords;
+            foods[i].category = cat;
+            foods[i].price = price;
+            break;
+          }
+        }
+      } else {
+        var maxId = 0;
+        for (var j = 0; j < foods.length; j++) {
+          if (foods[j].id > maxId) maxId = foods[j].id;
+        }
+        var newId = customId ? customId : (maxId + 1);
+        foods.push({ id: newId, name: name, en: keywords, category: cat, price: price });
+      }
+
+      try {
+        localStorage.setItem('tm_foods_clean_v2', JSON.stringify(foods));
+      } catch(e) {}
+      resetFoodForm();
+      renderFoodManagementTable();
+      filterFoodDropdown('');
+      alert('உணவு வெற்றிகரமாகச் சேமிக்கப்பட்டது!');
+    }
+
+    function editFoodItem(id) {
+      for (var i = 0; i < foods.length; i++) {
+        if (foods[i].id === id) {
+          var item = foods[i];
+          document.getElementById('foodEditId').value = item.id;
+          document.getElementById('foodIdInput').value = item.id;
+          document.getElementById('foodNameInput').value = item.name;
+          document.getElementById('foodKeywordsInput').value = item.en || '';
+          document.getElementById('foodCatInput').value = item.category;
+          document.getElementById('foodPriceInput').value = item.price;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          break;
+        }
+      }
+    }
+
+    function deleteFoodItem(id) {
+      if (confirm('இந்த உணவை நீக்க விரும்புகிறீர்களா?')) {
+        foods = foods.filter(function(f) { return f.id !== id; });
+        try {
+          localStorage.setItem('tm_foods_clean_v2', JSON.stringify(foods));
+        } catch(e) {}
+        renderFoodManagementTable();
+        filterFoodDropdown('');
+      }
+    }
+
+    function resetFoodForm() {
+      document.getElementById('foodEditId').value = '';
+      document.getElementById('foodIdInput').value = '';
+      document.getElementById('foodNameInput').value = '';
+      document.getElementById('foodKeywordsInput').value = '';
+      document.getElementById('foodCatInput').value = '';
+      document.getElementById('foodPriceInput').value = '';
+    }
+
+    function filterReports(period) {
+      var badges = document.querySelectorAll('#tab-reports .cat-badge');
+      for (var b = 0; b < badges.length; b++) {
+        badges[b].classList.remove('active');
+      }
+      var activeBtn = document.getElementById('repFilter-' + period);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      var now = new Date();
+      var filtered = salesHistory.slice();
+
+      if (period === 'daily') {
+        filtered = salesHistory.filter(function(s) {
+          var d = new Date(s.timestamp);
+          return d.toDateString() === now.toDateString();
+        });
+      } else if (period === 'weekly') {
+        var weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        filtered = salesHistory.filter(function(s) { return new Date(s.timestamp) >= weekAgo; });
+      } else if (period === 'monthly') {
+        filtered = salesHistory.filter(function(s) {
+          var d = new Date(s.timestamp);
+          return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        });
+      } else if (period === 'yearly') {
+        filtered = salesHistory.filter(function(s) {
+          var d = new Date(s.timestamp);
+          return d.getFullYear() === now.getFullYear();
+        });
+      }
+
+      var totalSales = 0, cashSales = 0, upiSales = 0;
+      for (var i = 0; i < filtered.length; i++) {
+        totalSales += filtered[i].grandTotal;
+        if (filtered[i].payMethod === 'CASH') cashSales += filtered[i].grandTotal;
+        if (filtered[i].payMethod === 'UPI') upiSales += filtered[i].grandTotal;
+      }
+
+      document.getElementById('repTotalSales').innerText = '₹ ' + totalSales.toFixed(2);
+      document.getElementById('repCashSales').innerText = '₹ ' + cashSales.toFixed(2);
+      document.getElementById('repUpiSales').innerText = '₹ ' + upiSales.toFixed(2);
+      document.getElementById('repBillCount').innerText = filtered.length;
+
+      var tbody = document.querySelector('#reportTable tbody');
+      if (!tbody) return;
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:15px; color:#94a3b8; font-weight:bold;">பதிவுகள் எதுவும் இல்லை</td></tr>';
+        return;
+      }
+
+      var rHtml = '';
+      var rev = filtered.slice().reverse();
+      for (var j = 0; j < rev.length; j++) {
+        var r = rev[j];
+        var itemNames = [];
+        for (var k = 0; k < r.items.length; k++) {
+          itemNames.push(r.items[k].name + ' (x' + r.items[k].qty + ')');
+        }
+        rHtml += '<tr>' +
+                   '<td><strong>#' + r.billNo + '</strong></td>' +
+                   '<td>' + r.dateStr.split(' ')[1] + '</td>' +
+                   '<td><span class="cat-badge" style="padding:2px 6px; font-size:0.7rem;">' + r.orderType + '</span></td>' +
+                   '<td><strong>' + r.payMethod + '</strong></td>' +
+                   '<td>' + itemNames.join(', ') + '</td>' +
+                   '<td><strong>₹ ' + r.grandTotal.toFixed(2) + '</strong></td>' +
+                 '</tr>';
+      }
+      tbody.innerHTML = rHtml;
+    }
+
+    function saveSettings() {
+      document.getElementById('headerRestName').innerText = document.getElementById('setRestName').value;
+      alert('அமைப்புகள் வெற்றிகரமாகச் சேமிக்கப்பட்டன!');
+    }
+
+    function clearAllSalesHistory() {
+      var entered = prompt('விற்பனைப் பதிவுகளை அழிக்க கடவுச்சொல்லை உள்ளிடவும் (Enter Password):');
+      if (entered === APP_PASS) {
+        if (confirm('உறுதியாக அனைத்து விற்பனைப் பதிவுகளையும் அழிக்க விரும்புகிறீர்களா?')) {
+          salesHistory = [];
+          try {
+            localStorage.removeItem('tm_sales_v2');
+          } catch(e) {}
+          filterReports('daily');
+          updateActiveBillNo();
+          alert('பதிவுகள் அனைத்தும் வெற்றிகரமாக அழிக்கப்பட்டன.');
+        }
+      } else if (entered !== null) {
+        alert('தவறான கடவுச்சொல்! பதிவுகள் அழிக்கப்படவில்லை.');
+      }
+    }
+
+    // Initial Load
+    filterFoodDropdown('');
+    updateActiveBillNo();
+  </script>
+</body>
+</html>
