@@ -1,0 +1,26 @@
+name: Build EXE
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - name: Install Tools
+      run: |
+        pip install pywebview pyinstaller
+    - name: Create App Script
+      run: |
+        Set-Content -Path app.py -Value "import webview`nwebview.create_window('Hotel Billing', 'index.html')`nwebview.start()"
+    - name: Build Windows EXE
+      run: |
+        pyinstaller --onefile --noconsole --add-data "index.html;." app.py
+    - name: Upload EXE File
+      uses: actions/upload-artifact@v4
+      with:
+        name: HotelBillingApp
+        path: dist/*.exe
+        
