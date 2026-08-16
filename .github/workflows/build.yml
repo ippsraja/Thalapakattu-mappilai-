@@ -1,5 +1,7 @@
-name: Build EXE
+name: Build and Release EXE
 on: [workflow_dispatch]
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: windows-latest
@@ -17,10 +19,10 @@ jobs:
         Set-Content -Path app.py -Value "import webview`nwebview.create_window('Hotel Billing', 'index.html')`nwebview.start()"
     - name: Build Windows EXE
       run: |
-        pyinstaller --onefile --noconsole --add-data "index.html;." app.py
-    - name: Upload EXE File
-      uses: actions/upload-artifact@v4
+        pyinstaller --onefile --noconsole --name "HotelBillingApp" --add-data "index.html;." app.py
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: HotelBillingApp
-        path: dist/*.exe
-        
+        tag_name: v1.0
+        name: Hotel Billing App v1.0
+        files: dist/HotelBillingApp.exe
